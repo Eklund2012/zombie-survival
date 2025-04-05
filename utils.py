@@ -25,3 +25,10 @@ def play_sound(sound_file, volume=0.1):
     sound = mixer.Sound(sound_file)
     sound.set_volume(volume)  # Volume range: 0.0 (mute) to 1.0 (full)
     sound.play()
+
+def load_image_sequence(path_pattern, count, size=None):
+    """
+    Loads a sequence of images with numbered filenames.
+    Example: load_image_sequence("./img/player/reload/survivor-reload_handgun_{}.png", 15)
+    """
+    return [load_image(path_pattern.format(i), size) for i in range(count)]
