@@ -21,7 +21,7 @@ WEAPON_TYPES = {
     'handgun': {
         'damage': 1,
         'range': 300,
-        'cooldown': 500,  # milliseconds
+        'cooldown': 1000,  # milliseconds
         'bullet_speed': 10,
         'ammo_capacity': 10,
     },

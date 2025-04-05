@@ -5,12 +5,17 @@ from settings import *
 from assets import *
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, enemy_type):
+        """ Initialize the enemy with its type and properties. """
         super().__init__()
+        self.enemy_type = enemy_type  # Type of enemy 
         self.original_image = enemy_img  # Keep original image for rotation
         self.image = self.original_image
         self.rect = self.image.get_rect(center=(0, 0))
         self.mask = pygame.mask.from_surface(self.image)
+        
+        self.spawn_outside_screen()
+        self.pos = pygame.math.Vector2(self.rect.centerx, self.rect.centery)
         
         # Attack-related properties
         self.is_attacking = False
@@ -25,7 +30,7 @@ class Enemy(pygame.sprite.Sprite):
         # Spawn outside screen
         self.spawn_outside_screen()
 
-        self.health = 3
+        self.health = enemy_type['health']  # Health of the enemy
         self.angle = 0
 
     def attack_timer(self):
@@ -65,17 +70,22 @@ class Enemy(pygame.sprite.Sprite):
         self.angle = math.degrees(math.atan2(rel_y, rel_x))
 
         # Rotate from the original image to avoid distortion
+        prev_center = self.rect.center
         self.image = pygame.transform.rotate(self.original_image, -self.angle)
-        self.rect = self.image.get_rect(center=self.rect.center)
+        self.rect = self.image.get_rect(center=prev_center)
+
 
     def update(self, player):
         """ Moves enemy toward the player. """
-        dx, dy = player.rect.centerx - self.rect.centerx, player.rect.centery - self.rect.centery
+        dx = player.rect.centerx - self.pos.x
+        dy = player.rect.centery - self.pos.y
         dist = math.hypot(dx, dy)
+
         if dist != 0:
-            dx, dy = dx / dist, dy / dist
-            self.rect.x += dx * ENEMY_SPEED
-            self.rect.y += dy * ENEMY_SPEED
+            direction = pygame.math.Vector2(dx, dy).normalize()
+            self.pos += direction * self.enemy_type['speed']
+            self.rect.center = self.pos  # Casts to int under the hood
+
 
         self.handle_animation()
         self.rotate_towards_player(player)

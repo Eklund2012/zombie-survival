@@ -18,6 +18,7 @@ class Player(pygame.sprite.Sprite):
         self.weapon = WEAPON_TYPES['handgun']         
         self.gun_cooldown = self.weapon['cooldown']
         self.ammo_count = self.weapon['ammo_capacity']
+        self.shoot_time = 0  # Time when the player can next shoot
 
         # Animation-related
         self.is_shooting = False
@@ -39,7 +40,7 @@ class Player(pygame.sprite.Sprite):
     def gun_timer(self):
         if not self.can_shoot:
             current_time = pygame.time.get_ticks()
-            if current_time >= self.gun_cooldown:
+            if current_time - self.shoot_time >= self.gun_cooldown:
                 self.can_shoot = True
 
     def be_hit_timer(self):
