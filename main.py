@@ -24,15 +24,34 @@ enemy_group = pygame.sprite.Group()
 blood_imgs = [load_image(f"./img/blood/blood_hit_0{i}.png") for i in range(1, 4)]
 blood_splatters = []  # Stores (image, position)
 
-def draw_ui():
+
+def draw_health_bar():
+    """ Draws the player's health bar on the screen. """
+    health_percentage = player.health / PLAYER_HEALTH
+    health_bar_width = 200 * health_percentage
+    health_bar_height = 20
+    health_bar_x = 10
+    health_bar_y = 10
+
+    # Draw the background of the health bar
+    pygame.draw.rect(screen, (255, 0, 0), (health_bar_x, health_bar_y, 200, health_bar_height))
+
+    # Draw the current health
+    pygame.draw.rect(screen, (0, 255, 0), (health_bar_x, health_bar_y, health_bar_width, health_bar_height))
+
+def draw_ui(killed_enemies):
     """ Draws the UI elements like ammo count and health. """
     if player.ammo_count > 0:
-        draw_text(screen, f"Ammo: {player.ammo_count}", (410, 640), 30, BLACK)
+        draw_text(screen, f"Ammo: {player.ammo_count}", (10, 35), 30, BLACK)
     else:
-        draw_text(screen, "Out of Ammo (R) to reload", (380, 640), 30, RED)
+        draw_text(screen, f"Ammo: {player.ammo_count}", (10, 35), 30, BLACK)
+        draw_text(screen, "Out of Ammo (R) to reload", (350, 350), 30, RED)
+    draw_text(screen, f"Killed: {killed_enemies}", (10, 60), 30, BLACK)
+    draw_health_bar()
 
 async def main():
     frame_count = 0
+    killed_enemies = 0
     while True:
         screen.blit(background_img, (0, 0))  # Draw background
         keys = pygame.key.get_pressed()
@@ -78,6 +97,7 @@ async def main():
                 bullet.kill()
                 if hit_enemy.health <= 0:
                     hit_enemy.kill()
+                    killed_enemies += 1
                     blood_splatters.append((random.choice(blood_imgs), hit_enemy.rect.center))
 
         # Check for collision between player and enemies
@@ -92,7 +112,6 @@ async def main():
                     enemy.can_attack = False  # Prevent immediate consecutive attacks
                     player.health -= enemy.enemy_type['damage']
                     player.hit_time = pygame.time.get_ticks()  # Set the time when player was hit
-                    print("Player hit! Health: " + str(player.health))
                     blood_splatters.append((random.choice(blood_imgs), player.rect.center))
 
         # Draw everything
@@ -103,7 +122,7 @@ async def main():
         bullet_group.draw(screen)
         enemy_group.draw(screen)
 
-        draw_ui()
+        draw_ui(killed_enemies)
 
         pygame.display.flip()
         clock.tick(FPS)

@@ -1,4 +1,26 @@
+# Python bytecode
 __pycache__/
+
+# macOS metadata
+__MACOSX/
+
+# pytest cache
 .pytest_cache/
+
+# Virtual environments
 venv/
+
+# Build artifacts
 build/
+dist/
+*.egg-info/
+
+# VSCode settings (if using it)
+.vscode/
+
+# Logs
+*.log
+
+# OS-specific files
+.DS_Store
+Thumbs.db

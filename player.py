@@ -31,7 +31,7 @@ class Player(pygame.sprite.Sprite):
         self.reload_frame_index = 0
         self.reload_animation_timer = 0
         self.reload_handgun_images = player_img_handgun_reload
-        self.reload_frame_duration = 150  # Adjust this to your liking
+        self.reload_frame_duration = RELOAD_FRAME_DUR  # Adjust this to your liking
 
         self.can_be_hit = True  # Player can be hit by enemies
         self.hit_time = 0

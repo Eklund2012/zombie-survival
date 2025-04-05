@@ -20,8 +20,7 @@ PLAYER_HIT_TIME = 1000  # milliseconds
 WEAPON_TYPES = {
     'handgun': {
         'damage': 1,
-        'range': 300,
-        'cooldown': 1000,  # milliseconds
+        'cooldown': 800,  # milliseconds
         'bullet_speed': 10,
         'ammo_capacity': 10,
     },
@@ -33,7 +32,6 @@ WEAPON_TYPES = {
     },
     'shotgun': {
         'damage': 20,
-        'range': 200,
         'cooldown': 200,  # milliseconds
         'bullet_speed': 8,
         'ammo_capacity': 8,
@@ -42,13 +40,14 @@ WEAPON_TYPES = {
 
 # Animation settings
 SHOOT_FRAME_DUR = 50
+RELOAD_FRAME_DUR = 100
 
 # Bullet settings
 BULLET_SIZE = (12, 7)    
 
 # Enemy settings
 ENEMY_SIZE = (80, 80)
-ENEMY_SIZE_ATTACK = (80 + 20, 80 + 20)
+ENEMY_SIZE_ATTACK = (80 + 22, 80 + 22)
 NUM_ENEMIES = 5
 ENEMY_ATTACK_CD = 1000
 ENEMY_SPEED = 1
@@ -57,7 +56,7 @@ ENEMY_SPAWN_RATE = 50  # Lower = more enemies
 ENEMY_TYPES = {
     'zombie': {
         'health': 3,
-        'damage': 1,
+        'damage': 5,
         'speed': 1,
     },
 }
