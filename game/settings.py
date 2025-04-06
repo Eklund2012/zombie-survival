@@ -58,5 +58,6 @@ ENEMY_TYPES = {
         'health': 3,
         'damage': 5,
         'speed': 1,
+        'attack_speed': 6000,
     },
 }

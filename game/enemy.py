@@ -1,8 +1,8 @@
 import pygame
 import random
 import math
-from settings import *
-from assets import *
+from .settings import *
+from .assets import *
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, enemy_type):
@@ -24,7 +24,7 @@ class Enemy(pygame.sprite.Sprite):
         self.attack_frame_duration = 150  # Duration per frame
         self.attack_animation_timer = 0  # Timer for animation frames
         self.attack_images = enemy_img_attack  # Attack frames (sprites)
-        self.attack_cooldown = ENEMY_ATTACK_CD  # Time between attacks in milliseconds
+        self.attack_cooldown = self.enemy_type['attack_speed']  # Time between attacks in milliseconds
         self.attack_time = 0  # Time when the enemy can next attack
 
         # Spawn outside screen

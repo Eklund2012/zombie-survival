@@ -1,8 +1,8 @@
 # bullet.py
 import pygame
 import math
-from settings import *
-from assets import bullet_img
+from .settings import *
+from .assets import bullet_img
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, x, y, angle, bullet_speed):

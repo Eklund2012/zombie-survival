@@ -1,8 +1,8 @@
 # player.py
 import pygame
 import math
-from settings import *
-from assets import *
+from .settings import *
+from .assets import *
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y):
