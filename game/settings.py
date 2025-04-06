@@ -48,10 +48,8 @@ BULLET_SIZE = (12, 7)
 # Enemy settings
 ENEMY_SIZE = (80, 80)
 ENEMY_SIZE_ATTACK = (80 + 22, 80 + 22)
-NUM_ENEMIES = 5
 ENEMY_ATTACK_CD = 1000
 ENEMY_SPEED = 1
-ENEMY_SPAWN_RATE = 50  # Lower = more enemies
 
 ENEMY_TYPES = {
     'zombie': {
@@ -59,5 +57,27 @@ ENEMY_TYPES = {
         'damage': 5,
         'speed': 1,
         'attack_speed': 6000,
+    },
+}
+
+# Wave settings
+WAVE_TYPES = {
+    'easy': {
+        'enemy_count': 1, # amount of enemies on the screen
+        'enemies_per_wave': 1, # amount of enemies spawned per wave
+        'enemy_type': 'zombie',
+        'spawn_rate': 50,
+    },
+    'medium': {
+        'enemy_count': 2,
+        'enemies_per_wave': 2,
+        'enemy_type': 'zombie',
+        'spawn_rate': 40,
+    },
+    'hard': {
+        'enemy_count': 3,
+        'enemies_per_wave': 3,
+        'enemy_type': 'zombie',
+        'spawn_rate': 30,
     },
 }

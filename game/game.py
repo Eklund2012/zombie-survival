@@ -12,6 +12,7 @@ class Game:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("Top-Down Shooter Survival")
         self.clock = pygame.time.Clock()
+        self.wave_state = WAVE_TYPES['easy']  # Default wave state
 
         # Player & groups
         self.player = Player(WIDTH // 2, HEIGHT // 2)
@@ -23,6 +24,7 @@ class Game:
         self.blood_splatters = []
 
         self.killed_enemies = 0
+        self.killed_enemies_per_wave = 0
         self.frame_count = 0
 
     def draw_health_bar(self):
@@ -63,12 +65,13 @@ class Game:
         self.player.gun_timer()
         self.player.be_hit_timer()
 
-        if self.frame_count % ENEMY_SPAWN_RATE == 0 and len(self.enemy_group) < NUM_ENEMIES:
+        # TODO FIX this
+        if self.frame_count % self.wave_state['spawn_rate'] == 0 and len(self.enemy_group) < self.wave_state['enemy_count'] and len(self.enemy_group) + self.killed_enemies <= self.wave_state['enemies_per_wave']:
             self.enemy_group.add(Enemy(ENEMY_TYPES['zombie']))
 
         self.player_group.update(keys)
         self.bullet_group.update()
-        self.enemy_group.update(self.player)
+        self.enemy_group.update(self.player, self.enemy_group)
 
         for bullet in self.bullet_group:
             hit_enemy = pygame.sprite.spritecollideany(bullet, self.enemy_group)
@@ -78,6 +81,15 @@ class Game:
                 if hit_enemy.health <= 0:
                     hit_enemy.kill()
                     self.killed_enemies += 1
+                    self.killed_enemies_per_wave += 1
+                    if self.killed_enemies_per_wave >= self.wave_state['enemies_per_wave'] and self.wave_state == WAVE_TYPES['easy']:
+                        self.wave_state = WAVE_TYPES['medium']
+                        self.killed_enemies_per_wave = 0
+                        print("medium wave")
+                    elif self.killed_enemies_per_wave >= self.wave_state['enemies_per_wave']:
+                        self.wave_state = WAVE_TYPES['hard']
+                        self.killed_enemies_per_wave = 0
+                        print("hard wave")
                     self.blood_splatters.append((random.choice(self.blood_imgs), hit_enemy.rect.center))
 
         for enemy in self.enemy_group:

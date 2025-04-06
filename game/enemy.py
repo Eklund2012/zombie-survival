@@ -75,8 +75,8 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=prev_center)
 
 
-    def update(self, player):
-        """ Moves enemy toward the player. """
+    def update(self, player, enemy_group):
+        """ Moves enemy toward the player and avoids overlapping with other enemies."""
         dx = player.rect.centerx - self.pos.x
         dy = player.rect.centery - self.pos.y
         dist = math.hypot(dx, dy)
@@ -84,9 +84,18 @@ class Enemy(pygame.sprite.Sprite):
         if dist != 0:
             direction = pygame.math.Vector2(dx, dy).normalize()
             self.pos += direction * self.enemy_type['speed']
-            self.rect.center = self.pos  # Casts to int under the hood
 
+        # Prevent overlap with other enemies
+        for enemy in enemy_group:
+            if enemy != self and pygame.sprite.collide_mask(self, enemy):
+                # Repel from overlapping enemy
+                overlap_vec = pygame.math.Vector2(self.rect.center) - pygame.math.Vector2(enemy.rect.center)
+                if overlap_vec.length() == 0:
+                    overlap_vec = pygame.math.Vector2(1, 0)  # Arbitrary direction to avoid zero vector
+                overlap_vec = overlap_vec.normalize()
+                self.pos += overlap_vec  # Push slightly away
 
+        self.rect.center = self.pos  # Casts to int under the hood
         self.handle_animation()
         self.rotate_towards_player(player)
 

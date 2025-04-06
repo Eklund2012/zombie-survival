@@ -15,7 +15,7 @@ build/
 dist/
 *.egg-info/
 
-# VSCode settings (if using it)
+# VSCode settings 
 .vscode/
 
 # Logs
