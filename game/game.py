@@ -25,6 +25,7 @@ class Game:
 
         self.killed_enemies = 0
         self.killed_enemies_per_wave = 0
+        self.spawned_enemies_per_wave = 0
         self.frame_count = 0
 
     def draw_health_bar(self):
@@ -66,8 +67,11 @@ class Game:
         self.player.be_hit_timer()
 
         # TODO FIX this
-        if self.frame_count % self.wave_state['spawn_rate'] == 0 and len(self.enemy_group) < self.wave_state['enemy_count'] and len(self.enemy_group) + self.killed_enemies <= self.wave_state['enemies_per_wave']:
-            self.enemy_group.add(Enemy(ENEMY_TYPES['zombie']))
+        if self.frame_count % self.wave_state['spawn_rate'] == 0: # Spawn rate of enemies
+            if len(self.enemy_group) < self.wave_state['enemy_count']: # Max enemies on screen
+                if self.spawned_enemies_per_wave < self.wave_state['enemies_per_wave']: # Spawned enemies per wave
+                    self.enemy_group.add(Enemy(ENEMY_TYPES['zombie']))
+                    self.spawned_enemies_per_wave += 1
 
         self.player_group.update(keys)
         self.bullet_group.update()
@@ -85,11 +89,11 @@ class Game:
                     if self.killed_enemies_per_wave >= self.wave_state['enemies_per_wave'] and self.wave_state == WAVE_TYPES['easy']:
                         self.wave_state = WAVE_TYPES['medium']
                         self.killed_enemies_per_wave = 0
-                        print("medium wave")
-                    elif self.killed_enemies_per_wave >= self.wave_state['enemies_per_wave']:
+                        self.spawned_enemies_per_wave = 0
+                    elif self.killed_enemies_per_wave >= self.wave_state['enemies_per_wave'] and self.wave_state == WAVE_TYPES['medium']:
                         self.wave_state = WAVE_TYPES['hard']
                         self.killed_enemies_per_wave = 0
-                        print("hard wave")
+                        self.spawned_enemies_per_wave = 0
                     self.blood_splatters.append((random.choice(self.blood_imgs), hit_enemy.rect.center))
 
         for enemy in self.enemy_group:
