@@ -5,6 +5,7 @@ from .player import Player
 from .bullet import Bullet
 from .enemy import Enemy
 from .utils import draw_text, load_image
+from .ui import draw_ui, draw_blood_splatters
 
 class Game:
     def __init__(self):
@@ -27,21 +28,6 @@ class Game:
         self.killed_enemies_per_wave = 0
         self.spawned_enemies_per_wave = 0
         self.frame_count = 0
-
-    def draw_health_bar(self):
-        health_percentage = self.player.health / PLAYER_HEALTH
-        health_bar_width = 200 * health_percentage
-        pygame.draw.rect(self.screen, (255, 0, 0), (10, 10, 200, 20))
-        pygame.draw.rect(self.screen, (0, 255, 0), (10, 10, health_bar_width, 20))
-
-    def draw_ui(self):
-        if self.player.ammo_count > 0:
-            draw_text(self.screen, f"Ammo: {self.player.ammo_count}", (10, 35), 30, BLACK)
-        else:
-            draw_text(self.screen, f"Ammo: {self.player.ammo_count}", (10, 35), 30, BLACK)
-            draw_text(self.screen, "Out of Ammo (R) to reload", (350, 350), 30, RED)
-        draw_text(self.screen, f"Killed: {self.killed_enemies}", (10, 60), 30, BLACK)
-        self.draw_health_bar()
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -109,15 +95,13 @@ class Game:
 
     def draw(self):
         self.screen.blit(background_img, (0, 0))
-
-        for img, pos in self.blood_splatters:
-            self.screen.blit(img, pos)
+        draw_blood_splatters(self.screen, self.blood_splatters)
 
         self.player_group.draw(self.screen)
         self.bullet_group.draw(self.screen)
         self.enemy_group.draw(self.screen)
 
-        self.draw_ui()
+        draw_ui(self.screen, self.player, self.killed_enemies)
         pygame.display.flip()
 
     async def run(self):
