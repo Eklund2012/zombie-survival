@@ -25,13 +25,13 @@ WEAPON_TYPES = {
         'ammo_capacity': 10,
     },
     'rifle': {
-        'damage': 15,
-        'cooldown': 300,  # milliseconds
+        'damage': 3,
+        'cooldown': 200,  # milliseconds
         'bullet_speed': 15,
         'ammo_capacity': 30,
     },
     'shotgun': {
-        'damage': 20,
+        'damage': 6,
         'cooldown': 200,  # milliseconds
         'bullet_speed': 8,
         'ammo_capacity': 8,
@@ -53,6 +53,8 @@ ENEMY_SPEED = 1
 
 ENEMY_TYPES = {
     'zombie': {
+        'img': "img/export/skeleton-idle_2.png",
+        'size': (80, 80),
         'health': 3,
         'damage': 5,
         'speed': 1,
@@ -65,13 +67,17 @@ WAVE_TYPES = {
     'easy': {
         'enemy_count': 1, # amount of enemies on the screen
         'enemies_per_wave': 1, # amount of enemies spawned per wave
-        'enemy_type': 'zombie',
+        'enemy_type': {
+                        'zombie'
+                      },  
         'spawn_rate': 50,
     },
     'medium': {
         'enemy_count': 2,
         'enemies_per_wave': 2,
-        'enemy_type': 'zombie',
+        'enemy_type': {
+                        'zombie',
+                      },
         'spawn_rate': 40,
     },
     'hard': {

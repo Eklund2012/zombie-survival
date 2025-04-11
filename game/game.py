@@ -1,10 +1,10 @@
 import pygame, random, math, asyncio
 from .settings import *
-from .assets import background_img
+from .assets import *
 from .player import Player
 from .bullet import Bullet
 from .enemy import Enemy
-from .utils import draw_text, load_image
+from .utils import load_image
 from .ui import draw_ui, draw_blood_splatters
 
 class Game:
@@ -52,7 +52,6 @@ class Game:
         self.player.gun_timer()
         self.player.be_hit_timer()
 
-        # TODO FIX this
         if self.frame_count % self.wave_state['spawn_rate'] == 0: # Spawn rate of enemies
             if len(self.enemy_group) < self.wave_state['enemy_count']: # Max enemies on screen
                 if self.spawned_enemies_per_wave < self.wave_state['enemies_per_wave']: # Spawned enemies per wave
@@ -73,10 +72,17 @@ class Game:
                     self.killed_enemies += 1
                     self.killed_enemies_per_wave += 1
                     if self.killed_enemies_per_wave >= self.wave_state['enemies_per_wave'] and self.wave_state == WAVE_TYPES['easy']:
+                        print("medium wave")
                         self.wave_state = WAVE_TYPES['medium']
+                        self.player.weapon = WEAPON_TYPES['rifle']
+                        self.player.ammo_count = self.player.weapon['ammo_capacity']
+                        self.player.original_image = player_img_rifle_idle
+                        self.player.shoot_images = player_img_rifle_shoot
+                        self.player.reload_images = player_img_rifle_reload
                         self.killed_enemies_per_wave = 0
                         self.spawned_enemies_per_wave = 0
                     elif self.killed_enemies_per_wave >= self.wave_state['enemies_per_wave'] and self.wave_state == WAVE_TYPES['medium']:
+                        print("hard wave")
                         self.wave_state = WAVE_TYPES['hard']
                         self.killed_enemies_per_wave = 0
                         self.spawned_enemies_per_wave = 0

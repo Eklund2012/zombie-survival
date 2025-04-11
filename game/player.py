@@ -21,16 +21,19 @@ class Player(pygame.sprite.Sprite):
         self.shoot_time = 0  # Time when the player can next shoot
 
         # Animation-related
+
+        ## Shooting animation
         self.is_shooting = False
         self.shoot_frame_index = 0
         self.shoot_animation_timer = 0
-        self.shoot_handgun_images = player_img_handgun_shoot
+        self.shoot_images = player_img_handgun_shoot
         self.shoot_frame_duration = SHOOT_FRAME_DUR  # milliseconds between frames
 
+        ## Reloading animation
         self.is_reloading = False
         self.reload_frame_index = 0
         self.reload_animation_timer = 0
-        self.reload_handgun_images = player_img_handgun_reload
+        self.reload_images = player_img_handgun_reload
         self.reload_frame_duration = RELOAD_FRAME_DUR  # Adjust this to your liking
 
         self.can_be_hit = True  # Player can be hit by enemies
@@ -85,13 +88,13 @@ class Player(pygame.sprite.Sprite):
         if self.is_reloading:
             if current_time - self.reload_animation_timer >= self.reload_frame_duration:
                 self.reload_animation_timer = current_time
-                if self.reload_frame_index < len(self.reload_handgun_images):
-                    self.original_image = self.reload_handgun_images[self.reload_frame_index]
+                if self.reload_frame_index < len(self.reload_images):
+                    self.original_image = self.reload_images[self.reload_frame_index]
                     self.mask = pygame.mask.from_surface(self.original_image)  # Update mask for new image
                     self.reload_frame_index += 1
                 else:
                     self.is_reloading = False
-                    self.original_image = player_img_handgun_idle
+                    #self.original_image = player_img_handgun_idle
                     self.ammo_count = self.weapon['ammo_capacity']
                     self.can_shoot = True
 
@@ -99,11 +102,11 @@ class Player(pygame.sprite.Sprite):
             if current_time - self.shoot_animation_timer >= self.shoot_frame_duration:
                 self.shoot_animation_timer = current_time
                 self.shoot_frame_index += 1
-                if self.shoot_frame_index >= len(self.shoot_handgun_images):
+                if self.shoot_frame_index >= len(self.shoot_images):
                     self.is_shooting = False
-                    self.original_image = player_img_handgun_idle
+                    #self.original_image = player_img_handgun_idle
                 else:
-                    self.original_image = self.shoot_handgun_images[self.shoot_frame_index]
+                    self.original_image = self.shoot_images[self.shoot_frame_index]
 
 
 

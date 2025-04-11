@@ -9,7 +9,7 @@ class Enemy(pygame.sprite.Sprite):
         """ Initialize the enemy with its type and properties. """
         super().__init__()
         self.enemy_type = enemy_type  # Type of enemy 
-        self.original_image = enemy_img  # Keep original image for rotation
+        self.original_image = load_image(self.enemy_type['img'], self.enemy_type['size'])  # Keep original image for rotation
         self.image = self.original_image
         self.rect = self.image.get_rect(center=(0, 0))
         self.mask = pygame.mask.from_surface(self.image)
@@ -23,7 +23,7 @@ class Enemy(pygame.sprite.Sprite):
         self.attack_frame_index = 0
         self.attack_frame_duration = 150  # Duration per frame
         self.attack_animation_timer = 0  # Timer for animation frames
-        self.attack_images = enemy_img_attack  # Attack frames (sprites)
+        self.attack_images = enemy_img_attack_zombie  # Attack frames (sprites)
         self.attack_cooldown = self.enemy_type['attack_speed']  # Time between attacks in milliseconds
         self.attack_time = 0  # Time when the enemy can next attack
 
@@ -108,7 +108,7 @@ class Enemy(pygame.sprite.Sprite):
                 self.attack_frame_index += 1
                 if self.attack_frame_index >= len(self.attack_images):
                     self.is_attacking = False
-                    self.original_image = enemy_img
+                    self.original_image = load_image(self.enemy_type['img'], self.enemy_type['size'])  # Keep original image for rotation
                 else:
                     self.original_image = self.attack_images[self.attack_frame_index]
                 

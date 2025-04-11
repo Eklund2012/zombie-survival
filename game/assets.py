@@ -18,10 +18,17 @@ player_img_handgun_reload = load_image_sequence(
     PLAYER_SIZE_RELOAD
 )
 
+player_img_rifle_idle = load_image("img/Top_Down_Survivor/rifle/idle/survivor-idle_rifle_0.png", PLAYER_SIZE)
+player_img_rifle_shoot = load_image_sequence("img/Top_Down_Survivor/rifle/shoot/survivor-shoot_rifle_{}.png",
+                                               3,
+                                                PLAYER_SIZE)
+player_img_rifle_reload = load_image_sequence(
+    "img/Top_Down_Survivor/rifle/reload/survivor-reload_rifle_{}.png", 
+    15, 
+    PLAYER_SIZE_RELOAD
+)
 
-
-enemy_img = load_image("img/export/skeleton-idle_2.png", ENEMY_SIZE)
-enemy_img_attack = load_image_sequence("img/export/skeleton-attack_{}.png", 9, ENEMY_SIZE_ATTACK)
+enemy_img_attack_zombie = load_image_sequence("img/export/skeleton-attack_{}.png", 9, ENEMY_SIZE_ATTACK)
 
 bullet_img = load_image("img/bullet.png", BULLET_SIZE)
 
