@@ -2,6 +2,7 @@
 import pygame
 from .settings import PLAYER_HEALTH, BLACK, RED
 from .utils import draw_text
+from .assets import bomb_img
 
 def draw_health_bar(screen, player):
     health_percentage = player.health / PLAYER_HEALTH
@@ -20,7 +21,17 @@ def draw_ui(screen, player, killed_enemies):
 
     draw_health_bar(screen, player)
 
+    draw_bombs(screen, player.bombs, player)
+
 def draw_blood_splatters(screen, blood_splatters):
     for img, pos in blood_splatters:
         screen.blit(img, pos)
+
+def draw_bombs(screen, bombs, player):
+    it = 0
+    while it < bombs:
+        pos = (10 + (it * 50), 85)
+        screen.blit(bomb_img, pos)
+        it += 1   
+
 

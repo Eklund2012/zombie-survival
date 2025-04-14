@@ -39,14 +39,22 @@ class Game:
                 if event.key == pygame.K_r and not self.player.is_reloading and self.player.ammo_count < self.player.weapon['ammo_capacity']:
                     self.player.reload_frames()
 
-            if event.type == pygame.MOUSEBUTTONDOWN and self.player.can_shoot and self.player.ammo_count > 0 and not self.player.is_reloading:
-                mouse_x, mouse_y = pygame.mouse.get_pos()
-                angle = math.degrees(math.atan2(mouse_y - self.player.rect.centery, mouse_x - self.player.rect.centerx))
-                self.player.shoot_frames()
-                self.bullet_group.add(Bullet(self.player.rect.centerx, self.player.rect.centery, angle, self.player.weapon['bullet_speed']))
-                self.player.ammo_count -= 1
-                self.player.can_shoot = False
-                self.player.shoot_time = pygame.time.get_ticks()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == LEFT and self.player.can_shoot and self.player.ammo_count > 0 and not self.player.is_reloading:
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+                    angle = math.degrees(math.atan2(mouse_y - self.player.rect.centery, mouse_x - self.player.rect.centerx))
+                    self.player.shoot_frames()
+                    self.bullet_group.add(Bullet(self.player.rect.centerx, self.player.rect.centery, angle, self.player.weapon['bullet_speed']))
+                    self.player.ammo_count -= 1
+                    self.player.can_shoot = False
+                    self.player.shoot_time = pygame.time.get_ticks()
+                elif event.button == RIGHT and self.player.bombs > 0:
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+                    angle = math.degrees(math.atan2(mouse_y - self.player.rect.centery, mouse_x - self.player.rect.centerx))
+                    #TODO implement bomb explosion CLASS
+                    self.bullet_group.add(Bullet(self.player.rect.centerx, self.player.rect.centery, angle, BOMB_SPEED))
+                    self.player.bombs -= 1
+                    # Bomb explosion logic here (not implemented in this snippet)
 
     def update(self, keys):
         self.player.gun_timer()
@@ -64,7 +72,7 @@ class Game:
 
         for bullet in self.bullet_group:
             hit_enemy = pygame.sprite.spritecollideany(bullet, self.enemy_group)
-            if hit_enemy:
+            if hit_enemy and isinstance(bullet, Bullet):
                 hit_enemy.health -= self.player.weapon['damage']
                 bullet.kill()
                 if hit_enemy.health <= 0:

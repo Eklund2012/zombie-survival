@@ -87,3 +87,12 @@ WAVE_TYPES = {
         'spawn_rate': 30,
     },
 }
+
+# Bomb settings
+BOMB_SIZE = (50, 50)
+BOMB_SPEED = 5
+
+# Mouse settings
+LEFT = 1
+MIDDLE = 2
+RIGHT = 3

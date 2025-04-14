@@ -34,4 +34,6 @@ bullet_img = load_image("img/bullet.png", BULLET_SIZE)
 
 background_img = load_image("img/background-1.png", (WIDTH, HEIGHT))
 
+bomb_img = load_image("img/bomb.png", BOMB_SIZE)
+
 pygame.display.quit()

@@ -20,6 +20,8 @@ class Player(pygame.sprite.Sprite):
         self.ammo_count = self.weapon['ammo_capacity']
         self.shoot_time = 0  # Time when the player can next shoot
 
+        self.bombs = 2
+
         # Animation-related
 
         ## Shooting animation
