@@ -36,4 +36,6 @@ background_img = load_image("img/background-1.png", (WIDTH, HEIGHT))
 
 bomb_img = load_image("img/bomb.png", BOMB_SIZE)
 
+explosion_img = load_image("img/explosion/Explosion.png", BOMB_SIZE)
+
 pygame.display.quit()

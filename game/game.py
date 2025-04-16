@@ -96,7 +96,10 @@ class Game:
                         self.spawned_enemies_per_wave = 0
                     self.blood_splatters.append((random.choice(self.blood_imgs), hit_enemy.rect.center))
             elif hit_enemy and isinstance(bullet, Bomb):
-                print("bomb hit")
+                #self.screen.blit(explosion_img, hit_enemy.rect.center)
+                hit_enemy.kill()
+                bullet.kill()
+                
 
         for enemy in self.enemy_group:
             enemy.attack_timer()
