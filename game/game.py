@@ -2,6 +2,7 @@ import pygame, random, math, asyncio
 from .settings import *
 from .assets import *
 from .player import Player
+from .bomb import Bomb
 from .bullet import Bullet
 from .enemy import Enemy
 from .utils import load_image
@@ -51,8 +52,7 @@ class Game:
                 elif event.button == RIGHT and self.player.bombs > 0:
                     mouse_x, mouse_y = pygame.mouse.get_pos()
                     angle = math.degrees(math.atan2(mouse_y - self.player.rect.centery, mouse_x - self.player.rect.centerx))
-                    #TODO implement bomb explosion CLASS
-                    self.bullet_group.add(Bullet(self.player.rect.centerx, self.player.rect.centery, angle, BOMB_SPEED))
+                    self.bullet_group.add(Bomb(self.player.rect.centerx, self.player.rect.centery, angle))
                     self.player.bombs -= 1
                     # Bomb explosion logic here (not implemented in this snippet)
 
@@ -95,6 +95,8 @@ class Game:
                         self.killed_enemies_per_wave = 0
                         self.spawned_enemies_per_wave = 0
                     self.blood_splatters.append((random.choice(self.blood_imgs), hit_enemy.rect.center))
+            elif hit_enemy and isinstance(bullet, Bomb):
+                print("bomb hit")
 
         for enemy in self.enemy_group:
             enemy.attack_timer()
