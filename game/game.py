@@ -1,10 +1,9 @@
-import pygame, random, math, asyncio
+import pygame, random, asyncio
 from .settings import *
 from .assets import *
 from .player import Player
 from .bomb import Bomb
 from .bullet import Bullet
-from .enemy import Enemy
 from .events import EventHandler
 from .spawner import EnemySpawner
 from .utils import load_image
