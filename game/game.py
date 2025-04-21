@@ -5,6 +5,8 @@ from .player import Player
 from .bomb import Bomb
 from .bullet import Bullet
 from .enemy import Enemy
+from .events import EventHandler
+from .spawner import EnemySpawner
 from .utils import load_image
 from .ui import draw_ui, draw_blood_splatters
 
@@ -27,44 +29,16 @@ class Game:
 
         self.killed_enemies = 0
         self.killed_enemies_per_wave = 0
-        self.spawned_enemies_per_wave = 0
         self.frame_count = 0
 
-    def handle_events(self):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_r and not self.player.is_reloading and self.player.ammo_count < self.player.weapon['ammo_capacity']:
-                    self.player.reload_frames()
-
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == LEFT and self.player.can_shoot and self.player.ammo_count > 0 and not self.player.is_reloading:
-                    mouse_x, mouse_y = pygame.mouse.get_pos()
-                    angle = math.degrees(math.atan2(mouse_y - self.player.rect.centery, mouse_x - self.player.rect.centerx))
-                    self.player.shoot_frames()
-                    self.bullet_group.add(Bullet(self.player.rect.centerx, self.player.rect.centery, angle, self.player.weapon['bullet_speed']))
-                    self.player.ammo_count -= 1
-                    self.player.can_shoot = False
-                    self.player.shoot_time = pygame.time.get_ticks()
-                elif event.button == RIGHT and self.player.bombs > 0:
-                    mouse_x, mouse_y = pygame.mouse.get_pos()
-                    angle = math.degrees(math.atan2(mouse_y - self.player.rect.centery, mouse_x - self.player.rect.centerx))
-                    self.bullet_group.add(Bomb(self.player.rect.centerx, self.player.rect.centery, angle))
-                    self.player.bombs -= 1
-                    # Bomb explosion logic here (not implemented in this snippet)
+        self.event_handler = EventHandler(self.player, self.bullet_group)
+        self.spawner = EnemySpawner(self.enemy_group, self.wave_state)
 
     def update(self, keys):
         self.player.gun_timer()
         self.player.be_hit_timer()
 
-        if self.frame_count % self.wave_state['spawn_rate'] == 0: # Spawn rate of enemies
-            if len(self.enemy_group) < self.wave_state['enemy_count']: # Max enemies on screen
-                if self.spawned_enemies_per_wave < self.wave_state['enemies_per_wave']: # Spawned enemies per wave
-                    self.enemy_group.add(Enemy(ENEMY_TYPES['zombie']))
-                    self.spawned_enemies_per_wave += 1
+        self.spawner.spawn_enemies(self.frame_count)
 
         self.player_group.update(keys)
         self.bullet_group.update()
@@ -82,21 +56,22 @@ class Game:
                     if self.killed_enemies_per_wave >= self.wave_state['enemies_per_wave'] and self.wave_state == WAVE_TYPES['easy']:
                         print("medium wave")
                         self.wave_state = WAVE_TYPES['medium']
+                        self.spawner.set_wave_state(self.wave_state)
+                        self.spawner.reset_wave()
                         self.player.weapon = WEAPON_TYPES['rifle']
                         self.player.ammo_count = self.player.weapon['ammo_capacity']
                         self.player.original_image = player_img_rifle_idle
                         self.player.shoot_images = player_img_rifle_shoot
                         self.player.reload_images = player_img_rifle_reload
                         self.killed_enemies_per_wave = 0
-                        self.spawned_enemies_per_wave = 0
                     elif self.killed_enemies_per_wave >= self.wave_state['enemies_per_wave'] and self.wave_state == WAVE_TYPES['medium']:
                         print("hard wave")
                         self.wave_state = WAVE_TYPES['hard']
+                        self.spawner.set_wave_state(self.wave_state)
+                        self.spawner.reset_wave()
                         self.killed_enemies_per_wave = 0
-                        self.spawned_enemies_per_wave = 0
                     self.blood_splatters.append((random.choice(self.blood_imgs), hit_enemy.rect.center))
             elif hit_enemy and isinstance(bullet, Bomb):
-                #self.screen.blit(explosion_img, hit_enemy.rect.center)
                 hit_enemy.kill()
                 bullet.kill()
                 
@@ -126,7 +101,7 @@ class Game:
     async def run(self):
         while True:
             keys = pygame.key.get_pressed()
-            self.handle_events()
+            self.event_handler.handle_events()
             self.update(keys)
             self.draw()
 
