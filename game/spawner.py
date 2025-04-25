@@ -1,4 +1,3 @@
-import pygame
 from .enemy import Enemy
 from .settings import ENEMY_TYPES
 

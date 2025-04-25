@@ -1,4 +1,4 @@
-import pygame, random, asyncio
+import pygame, random, asyncio, os
 from .settings import *
 from .assets import *
 from .player import Player
@@ -13,7 +13,7 @@ class Game:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
-        pygame.display.set_caption("Top-Down Shooter Survival")
+        
         self.clock = pygame.time.Clock()
         self.wave_state = WAVE_TYPES['easy']  # Default wave state
 
@@ -23,7 +23,7 @@ class Game:
         self.bullet_group = pygame.sprite.Group()
         self.enemy_group = pygame.sprite.Group()
 
-        self.blood_imgs = [load_image(f"./img/blood/blood_hit_0{i}.png") for i in range(1, 4)]
+        self.blood_imgs = [load_image(f"./img/blood/blood_hit_0{i}.png") for i in range(1, len(os.listdir("./img/blood")) + 1)]
         self.blood_splatters = []
 
         self.killed_enemies = 0
@@ -45,9 +45,11 @@ class Game:
 
         for bullet in self.bullet_group:
             hit_enemy = pygame.sprite.spritecollideany(bullet, self.enemy_group)
-            if hit_enemy and isinstance(bullet, Bullet):
-                hit_enemy.health -= self.player.weapon['damage']
-                bullet.kill()
+            if hit_enemy:
+                if isinstance(bullet, Bullet):
+                    hit_enemy.health -= self.player.weapon['damage']
+                elif isinstance(bullet, Bomb):
+                    hit_enemy.health = 0
                 if hit_enemy.health <= 0:
                     hit_enemy.kill()
                     self.killed_enemies += 1
@@ -70,8 +72,6 @@ class Game:
                         self.spawner.reset_wave()
                         self.killed_enemies_per_wave = 0
                     self.blood_splatters.append((random.choice(self.blood_imgs), hit_enemy.rect.center))
-            elif hit_enemy and isinstance(bullet, Bomb):
-                hit_enemy.kill()
                 bullet.kill()
                 
 
@@ -103,6 +103,8 @@ class Game:
             self.event_handler.handle_events()
             self.update(keys)
             self.draw()
+
+            pygame.display.set_caption("Top-Down Shooter Survival - FPS: {:.2f}".format(self.clock.get_fps()))
 
             self.clock.tick(FPS)
             self.frame_count += 1

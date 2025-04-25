@@ -17,7 +17,7 @@ def draw_ui(screen, player, killed_enemies):
         draw_text(screen, "Out of Ammo (R) to reload", (350, 350), 30, RED)
 
     # Kill count
-    draw_text(screen, f"Killed: {killed_enemies}", (10, 60), 30, BLACK)
+    draw_text(screen, f"Zombies Killed: {killed_enemies}", (10, 60), 30, BLACK)
 
     draw_health_bar(screen, player)
 
