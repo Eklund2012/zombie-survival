@@ -3,9 +3,11 @@ import pygame
 from .settings import *
 from .utils import *
 
-# Ensure pygame is initialized before loading assets
+# pygame is initialized before loading assets
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))  # Temporary screen setup
+
+crosshair_img = load_image("img/crosshair.png", (CROSSHAIR_SIZE))
 
 # Load images 
 player_img_handgun_idle = load_image("img/Top_Down_Survivor/handgun/idle/survivor-idle_handgun_0.png", PLAYER_SIZE)
@@ -24,6 +26,16 @@ player_img_rifle_shoot = load_image_sequence("img/Top_Down_Survivor/rifle/shoot/
                                                 PLAYER_SIZE)
 player_img_rifle_reload = load_image_sequence(
     "img/Top_Down_Survivor/rifle/reload/survivor-reload_rifle_{}.png", 
+    15, 
+    PLAYER_SIZE_RELOAD
+)
+
+player_img_shotgun_idle = load_image("img/Top_Down_Survivor/shotgun/idle/survivor-idle_shotgun_0.png", PLAYER_SIZE)
+player_img_shotgun_shoot = load_image_sequence("img/Top_Down_Survivor/shotgun/shoot/survivor-shoot_shotgun_{}.png",
+                                               3,
+                                                PLAYER_SIZE)
+player_img_shotgun_reload = load_image_sequence(
+    "img/Top_Down_Survivor/shotgun/reload/survivor-reload_shotgun_{}.png", 
     15, 
     PLAYER_SIZE_RELOAD
 )

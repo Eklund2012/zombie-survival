@@ -22,8 +22,6 @@ class Player(pygame.sprite.Sprite):
 
         self.bombs = 2
 
-        # Animation-related
-
         ## Shooting animation
         self.is_shooting = False
         self.shoot_frame_index = 0

@@ -19,18 +19,21 @@ PLAYER_HIT_TIME = 1000  # milliseconds
 
 WEAPON_TYPES = {
     'handgun': {
+        'name': 'Handgun',
         'damage': 1,
         'cooldown': 800,  # milliseconds
         'bullet_speed': 10,
         'ammo_capacity': 10,
     },
     'rifle': {
+        'name': 'Rifle',
         'damage': 3,
         'cooldown': 200,  # milliseconds
         'bullet_speed': 15,
         'ammo_capacity': 30,
     },
     'shotgun': {
+        'name': 'Shotgun',
         'damage': 6,
         'cooldown': 200,  # milliseconds
         'bullet_speed': 8,
@@ -96,3 +99,6 @@ BOMB_SPEED = 5
 LEFT = 1
 MIDDLE = 2
 RIGHT = 3
+
+# Crosshair settings
+CROSSHAIR_SIZE = (50, 50)

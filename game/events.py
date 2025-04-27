@@ -38,15 +38,31 @@ class EventHandler:
     def _shoot_bullet(self, angle):
         if self.player.can_shoot and self.player.ammo_count > 0 and not self.player.is_reloading:
             self.player.shoot_frames()
-            self.bullet_group.add(Bullet(
-                self.player.rect.centerx,
-                self.player.rect.centery,
-                angle,
-                self.player.weapon['bullet_speed']
-            ))
-            self.player.ammo_count -= 1
+            
+            if self.player.weapon['name'] == 'Shotgun':
+                # Shotgun shoots 3 bullets in a cone (-10°, 0°, +10°)
+                spread_angles = [-10, 0, 10]
+                for spread in spread_angles:
+                    self.bullet_group.add(Bullet(
+                        self.player.rect.centerx,
+                        self.player.rect.centery,
+                        angle + spread,
+                        self.player.weapon['bullet_speed']
+                    ))
+                self.player.ammo_count -= 1  # Only consume 1 ammo per click (not 3)
+            else:
+                # Regular single bullet
+                self.bullet_group.add(Bullet(
+                    self.player.rect.centerx,
+                    self.player.rect.centery,
+                    angle,
+                    self.player.weapon['bullet_speed']
+                ))
+                self.player.ammo_count -= 1
+
             self.player.can_shoot = False
             self.player.shoot_time = pygame.time.get_ticks()
+
 
     def _throw_bomb(self, angle):
         if self.player.bombs > 0:
