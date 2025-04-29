@@ -1,5 +1,5 @@
 # assets.py
-import pygame
+import pygame, os
 from .settings import *
 from .utils import *
 
@@ -48,6 +48,6 @@ background_img = load_image("img/background-1.png", (WIDTH, HEIGHT))
 
 bomb_img = load_image("img/bomb.png", BOMB_SIZE)
 
-explosion_img = load_image("img/explosion/Explosion.png", BOMB_SIZE)
+explosion_frames = load_image_sequence("img/explosion/Explosion{}.png", 12, EXPLOSION_SIZE)
 
 pygame.display.quit()

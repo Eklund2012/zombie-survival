@@ -38,6 +38,3 @@ def draw_bombs(screen, bombs):
         screen.blit(bomb_img, pos)
         it += 1   
 
-def draw_explosions(screen, pos):
-    pass
-

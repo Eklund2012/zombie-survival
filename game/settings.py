@@ -61,7 +61,7 @@ ENEMY_TYPES = {
         'health': 3,
         'damage': 5,
         'speed': 1,
-        'attack_speed': 6000,
+        'attack_speed': 1000,
     },
 }
 
@@ -93,6 +93,7 @@ WAVE_TYPES = {
 
 # Bomb settings
 BOMB_SIZE = (50, 50)
+EXPLOSION_SIZE = (100, 100)
 BOMB_SPEED = 5
 
 # Mouse settings

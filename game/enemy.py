@@ -76,28 +76,40 @@ class Enemy(pygame.sprite.Sprite):
 
 
     def update(self, player, enemy_group):
-        """ Moves enemy toward the player and avoids overlapping with other enemies."""
+        """Moves enemy toward the player, handles attacks, and prevents overlap."""
+        self.attack_timer()  # Cooldown logic
+
         dx = player.rect.centerx - self.pos.x
         dy = player.rect.centery - self.pos.y
         dist = math.hypot(dx, dy)
 
-        if dist != 0:
-            direction = pygame.math.Vector2(dx, dy).normalize()
-            self.pos += direction * self.enemy_type['speed']
+        # Attack range threshold (tweak as needed)
+        ATTACK_RANGE = 40  
+
+        if dist <= ATTACK_RANGE and self.can_attack:
+            self.attack_frames()
+            player.health -= self.enemy_type['damage']  # Apply damage
+            self.can_attack = False
+            self.attack_time = pygame.time.get_ticks()  # Start cooldown
+        elif not self.is_attacking:
+            # Only move if not attacking
+            if dist != 0:
+                direction = pygame.math.Vector2(dx, dy).normalize()
+                self.pos += direction * self.enemy_type['speed']
 
         # Prevent overlap with other enemies
         for enemy in enemy_group:
             if enemy != self and pygame.sprite.collide_mask(self, enemy):
-                # Repel from overlapping enemy
                 overlap_vec = pygame.math.Vector2(self.rect.center) - pygame.math.Vector2(enemy.rect.center)
                 if overlap_vec.length() == 0:
-                    overlap_vec = pygame.math.Vector2(1, 0)  # Arbitrary direction to avoid zero vector
+                    overlap_vec = pygame.math.Vector2(1, 0)
                 overlap_vec = overlap_vec.normalize()
                 self.pos += overlap_vec  # Push slightly away
 
-        self.rect.center = self.pos  # Casts to int under the hood
+        self.rect.center = self.pos
         self.handle_animation()
         self.rotate_towards_player(player)
+
 
     def handle_animation(self):
         current_time = pygame.time.get_ticks()
