@@ -91,7 +91,8 @@ class Game:
             self.player.reload_images = player_img_shotgun_reload
         elif current_wave == WAVE_TYPES['hard']:
             self.wave_intermission(3)
-            self.spawner.disable_spawning()
+            self.wave_state = WAVE_TYPES['ffa']
+            #self.spawner.disable_spawning()
         self.killed_enemies_per_wave = 0
         self.player.ammo_count = self.player.weapon['ammo_capacity']
         self.spawner.set_wave_state(self.wave_state)
@@ -135,9 +136,12 @@ class Game:
     def wave_intermission(self, wave_number):
         font_big = pygame.font.Font(None, 72)
         font_small = pygame.font.Font(None, 36)
-
-        title = font_big.render(f"Wave {wave_number} Complete!", True, (255, 255, 255))
-        continue_msg = font_small.render("Press SPACE to start next wave", True, (200, 200, 200))
+        if wave_number == 3:
+            title = font_big.render("Final Wave!", True, (255, 255, 255))
+            continue_msg = font_small.render("Survive as long as you can!", True, (200, 200, 200))
+        else:
+            title = font_big.render(f"Wave {wave_number} Complete!", True, (255, 255, 255))
+            continue_msg = font_small.render("Press SPACE to start next wave", True, (200, 200, 200))
 
         while True:
             self.screen.blit(background_img, (0, 0))

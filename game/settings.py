@@ -89,6 +89,12 @@ WAVE_TYPES = {
         'enemy_type': 'zombie',
         'spawn_rate': 30,
     },
+    'ffa': {
+        'enemy_count': 10000,
+        'enemies_per_wave': 10000,
+        'enemy_type': 'zombie',
+        'spawn_rate': 30,
+    },
 }
 
 # Bomb settings
