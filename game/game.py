@@ -50,7 +50,7 @@ class Game:
 
         self.handle_bullet_enemy_collisions()
         for explosion in self.explosions[:]:
-            explosion.update()
+            explosion.update(self.enemy_group)
             if explosion.finished:
                 self.explosions.remove(explosion)
 
@@ -68,7 +68,7 @@ class Game:
         enemy.kill()
         self.blood_splatters.append((random.choice(self.blood_imgs), enemy.rect.center))
         if isinstance(bullet, Bomb):
-            self.explosions.append(Explosion(enemy.rect.center))
+            self.explosions.append(Explosion(enemy.rect.center, self.register_enemy_kill))
         self.killed_enemies += 1
         self.killed_enemies_per_wave += 1
         if self.killed_enemies_per_wave >= self.wave_state['enemies_per_wave']:
