@@ -10,13 +10,14 @@ def draw_health_bar(screen, player):
     pygame.draw.rect(screen, (255, 0, 0), (10, 10, 200, 20))
     pygame.draw.rect(screen, (0, 255, 0), (10, 10, health_bar_width, 20))
 
-def draw_ui(screen, player, killed_enemies, blood_splatters):
+def draw_ui(screen, player, killed_enemies, blood_splatters, wave_state):
     # Ammo text
     draw_text(screen, f"Ammo: {player.ammo_count}", (10, 35), 30, BLACK)
     if player.ammo_count == 0:
-        draw_text(screen, "Out of Ammo (R) to reload", (350, 350), 30, RED)
+        draw_text(screen, "Out of Ammo (R) to reload", (330, 10), 30, RED)
 
     draw_text(screen, f"Zombies Killed: {killed_enemies}", (10, 60), 30, BLACK)
+    draw_text(screen, f"Wave {wave_state['number']}/3", (600, 10), 30, BLACK)
     draw_health_bar(screen, player)
     draw_bombs(screen, player.bombs)
     draw_blood_splatters(screen, blood_splatters)

@@ -3,6 +3,7 @@ import pygame
 from pygame import mixer
 
 def load_image(path, size=None):
+    print("Loading image:", path)
     image = pygame.image.load(path).convert_alpha()
     if size:
         image = pygame.transform.scale(image, size)
@@ -31,4 +32,5 @@ def load_image_sequence(path_pattern, count, size=None):
     Loads a sequence of images with numbered filenames.
     Example: load_image_sequence("./img/player/reload/survivor-reload_handgun_{}.png", 15)
     """
+    print("Loading image:", path_pattern)
     return [load_image(path_pattern.format(i), size) for i in range(count)]

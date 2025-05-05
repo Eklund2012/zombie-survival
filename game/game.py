@@ -8,7 +8,7 @@ from .events import EventHandler
 from .spawner import EnemySpawner
 from .explosion import Explosion
 from .utils import load_image
-from .ui import draw_ui, draw_blood_splatters
+from .ui import draw_ui
 
 class Game:
     def __init__(self):
@@ -28,7 +28,7 @@ class Game:
         self.bullet_group = pygame.sprite.Group()
         self.enemy_group = pygame.sprite.Group()
 
-        self.blood_imgs = [load_image(f"./img/blood/blood_hit_0{i}.png") for i in range(1, len(os.listdir("./img/blood")) + 1)]
+        self.blood_imgs = [load_image(f"./img/blood/blood_hit_0{i}.png") for i in range(1, len(os.listdir("./img/blood")))]
         self.blood_splatters = []
 
         self.killed_enemies = 0
@@ -75,6 +75,7 @@ class Game:
             self.change_wave(self.wave_state)
 
     def change_wave(self, current_wave):
+        self.blood_splatters.clear()
         if current_wave == WAVE_TYPES['easy']:
             self.wave_intermission(1)
             self.wave_state = WAVE_TYPES['medium']         
@@ -105,7 +106,7 @@ class Game:
         self.bullet_group.draw(self.screen)
         self.enemy_group.draw(self.screen)
 
-        draw_ui(self.screen, self.player, self.killed_enemies, self.blood_splatters)      
+        draw_ui(self.screen, self.player, self.killed_enemies, self.blood_splatters, self.wave_state)      
 
         for explosion in self.explosions:
             explosion.draw(self.screen)
@@ -165,7 +166,7 @@ class Game:
             self.draw()
 
             pygame.display.set_caption("Top-Down Shooter Survival - FPS: {:.2f}".format(self.clock.get_fps()))
-
+            
             self.clock.tick(FPS)
             self.frame_count += 1
             await asyncio.sleep(0)

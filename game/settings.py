@@ -59,7 +59,7 @@ ENEMY_TYPES = {
         'img': "img/export/skeleton-idle_2.png",
         'size': (80, 80),
         'health': 3,
-        'damage': 5,
+        'damage': 10,
         'speed': 1,
         'attack_speed': 1000,
     },
@@ -68,32 +68,36 @@ ENEMY_TYPES = {
 # Wave settings
 WAVE_TYPES = {
     'easy': {
-        'enemy_count': 1, # amount of enemies on the screen
-        'enemies_per_wave': 1, # amount of enemies spawned per wave
+        'number': 1,
+        'enemy_count': 10, # amount of enemies on the screen
+        'enemies_per_wave': 10, # amount of enemies spawned per wave
         'enemy_type': {
                         'zombie'
                       },  
         'spawn_rate': 50,
     },
     'medium': {
-        'enemy_count': 2,
-        'enemies_per_wave': 2,
+        'number': 2,
+        'enemy_count': 20,
+        'enemies_per_wave': 20,
         'enemy_type': {
                         'zombie',
                       },
         'spawn_rate': 40,
     },
     'hard': {
-        'enemy_count': 3,
-        'enemies_per_wave': 3,
+        'number': 3,
+        'enemy_count': 30,
+        'enemies_per_wave': 30,
         'enemy_type': 'zombie',
         'spawn_rate': 30,
     },
     'ffa': {
+        'number': 4,
         'enemy_count': 10000,
         'enemies_per_wave': 10000,
         'enemy_type': 'zombie',
-        'spawn_rate': 30,
+        'spawn_rate': 20,
     },
 }
 

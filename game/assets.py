@@ -5,7 +5,10 @@ from .utils import *
 
 # pygame is initialized before loading assets
 pygame.init()
-screen = pygame.display.set_mode((WIDTH, HEIGHT))  # Temporary screen setup
+#screen = pygame.display.set_mode((WIDTH, HEIGHT))  # Temporary screen setup
+pygame.display.init()
+pygame.display.set_mode((1, 1), flags=pygame.HIDDEN)
+
 
 crosshair_img = load_image("img/crosshair.png", (CROSSHAIR_SIZE))
 
