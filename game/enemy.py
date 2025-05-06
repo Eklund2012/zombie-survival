@@ -3,6 +3,7 @@ import random
 import math
 from .settings import *
 from .assets import *
+from .utils import play_sound
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, enemy_type):
@@ -87,6 +88,7 @@ class Enemy(pygame.sprite.Sprite):
         ATTACK_RANGE = 40  
 
         if dist <= ATTACK_RANGE and self.can_attack:
+            play_sound("./sounds/zombie-1.wav", 0.1)  # Play attack sound
             self.attack_frames()
             player.health -= self.enemy_type['damage']  # Apply damage
             self.can_attack = False
