@@ -165,6 +165,15 @@ class Game:
             self.update(keys)
             self.draw()
 
+            if self.player.health <= 0:
+                self.player_group.remove(self.player)
+                self.screen.blit(background_img, (0, 0))
+                game_over_text = pygame.font.Font(None, 72).render("Game Over", True, (255, 0, 0))
+                self.screen.blit(game_over_text, game_over_text.get_rect(center=(WIDTH // 2, HEIGHT // 2)))
+                pygame.display.flip()
+                await asyncio.sleep(3)
+                break
+
             pygame.display.set_caption("Top-Down Shooter Survival - FPS: {:.2f}".format(self.clock.get_fps()))
             
             self.clock.tick(FPS)
