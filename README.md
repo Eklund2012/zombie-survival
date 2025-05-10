@@ -20,7 +20,7 @@ You are the last survivor in a zombie-infested city. Armed with only your weapon
 
 ## 📷 Screenshots
 
-*(Add a few gameplay screenshots here if possible!)*
+![Gameplay Screenshot](img/game_screenshots/1.png)
 
 ### Requirements
 
